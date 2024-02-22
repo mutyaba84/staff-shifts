@@ -36,9 +36,9 @@ class Shift(models.Model):
     end_time = models.DateTimeField()
 
 class Availability(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,  related_name='user_profile_availability')
     shift = models.ForeignKey(Shift, on_delete=models.CASCADE)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='user_profile_availability')
     date_time_selected = models.DateTimeField()
     is_available = models.BooleanField(default=False)
 

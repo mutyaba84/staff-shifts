@@ -1,0 +1,6 @@
+<!-- user_profiles/profile_detail.html -->
+{% extends 'base.html' %} {% block content %}
+<h2>User Profile Detail</h2>
+<p>Name: {{ object.user.get_full_name }}</p>
+<!-- Display other detailed user profile information as needed -->
+{% endblock %}

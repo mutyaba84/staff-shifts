@@ -1,0 +1,8 @@
+<!-- user_profiles/profile_edit.html -->
+{% extends 'base.html' %} {% block content %}
+<h2>Edit Your Profile</h2>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Save Changes</button>
+</form>
+{% endblock %}

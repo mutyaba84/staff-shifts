@@ -1,0 +1,12 @@
+<!-- templates/shifts/shift_list.html -->
+{% extends 'base.html' %} {% block content %}
+<h2>Shift List</h2>
+<ul>
+  {% for shift in shifts %}
+  <li>
+    <a href="{% url 'shift_detail' shift.id %}">{{ shift.shift_name }}</a>
+    - {{ shift.start_time }} to {{ shift.end_time }}
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
