@@ -43,7 +43,7 @@ class Availability(models.Model):
     is_available = models.BooleanField(default=False)
 
 class ShiftOffer(models.Model):
-    user = models.ForeignKey(User, related_name='offers_received', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='user_profile_offers_received', on_delete=models.CASCADE)
     employer = models.ForeignKey(User, related_name='offers_sent', on_delete=models.CASCADE)
     shift = models.ForeignKey(Shift, on_delete=models.CASCADE)
     offer_status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('rejected', 'Rejected')])

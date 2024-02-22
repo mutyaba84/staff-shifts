@@ -74,9 +74,9 @@ class Shift(models.Model):
 
 
 class Availability(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='shift_availability')
     shift = models.ForeignKey(Shift, on_delete=models.CASCADE)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='shift_availability')
     date_time_selected = models.DateTimeField()
     is_available = models.BooleanField(default=False)
 
@@ -90,7 +90,7 @@ class Availability(models.Model):
 
 
 class ShiftOffer(models.Model):
-    user = models.ForeignKey(User, related_name='offers_received', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='shift_offers_received', on_delete=models.CASCADE)
     employer = models.ForeignKey(Employer, related_name='offers_sent', on_delete=models.CASCADE)
     shift = models.ForeignKey('Shift', on_delete=models.CASCADE)
     offer_status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('rejected', 'Rejected')])
