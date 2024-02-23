@@ -21,4 +21,21 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('employers/', include('employers.urls', namespace='employers')),
     
+
+    # Include user_profiles app URLs
+    path('user_profiles/', include('user_profiles.urls')),
+    
+    # Include shifts app URLs
+    path('shifts/', include('shifts.urls')),
+    
+    # Include notifications app URLs
+    path('notifications/', include('notifications.urls')),
+    
+    # Add more app-specific URLs as needed
+    
+    # Include authentication URLs (assuming you're using Django's built-in authentication)
+    path('accounts/', include('django.contrib.auth.urls')),
+    # Add your home or landing page URL here
+    # path('', include('your_app.urls')),
 ]
+

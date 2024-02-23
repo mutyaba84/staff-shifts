@@ -1,4 +1,3 @@
-# shifts/forms.py
 from django import forms
 from .models import Shift, Availability, ShiftOffer
 

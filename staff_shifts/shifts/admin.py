@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import Shift, Availability, ShiftOffer
 
-
 @admin.register(Shift)
 class ShiftAdmin(admin.ModelAdmin):
     list_display = ['shift_name', 'start_time', 'end_time', 'status']
@@ -17,16 +16,12 @@ class ShiftAdmin(admin.ModelAdmin):
 
     cancel_selected_shifts.short_description = 'Cancel selected shifts'
 
-
 @admin.register(Availability)
 class AvailabilityAdmin(admin.ModelAdmin):
     list_display = ['user', 'shift', 'date_time_selected', 'is_available']
     search_fields = ['user__username', 'shift__shift_name', 'date_time_selected']
     list_filter = ['is_available', 'shift__shift_name', 'user__username']
     date_hierarchy = 'date_time_selected'
-
-
-
 
 @admin.register(ShiftOffer)
 class ShiftOfferAdmin(admin.ModelAdmin):

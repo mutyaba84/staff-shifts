@@ -14,13 +14,16 @@ class AddressAdmin(admin.ModelAdmin):
 @admin.register(Shift)
 class ShiftAdmin(admin.ModelAdmin):
     list_display = ('shift_name', 'start_time', 'end_time', 'max_users')
+    search_fields = ('shift_name', 'start_time', 'end_time')  # Add searchable fields
 
 @admin.register(Availability)
 class AvailabilityAdmin(admin.ModelAdmin):
     list_display = ('user', 'shift', 'address', 'date_time_selected', 'is_available')
     search_fields = ('user__username', 'shift__shift_name', 'address__address_line1')
+    list_filter = ('shift__shift_name', 'is_available')  # Add list filters
 
 @admin.register(ShiftOffer)
 class ShiftOfferAdmin(admin.ModelAdmin):
     list_display = ('user', 'employer', 'shift', 'offer_status', 'offer_message')
     search_fields = ('user__username', 'employer__username', 'shift__shift_name')
+    list_filter = ('offer_status', 'shift__shift_name')  # Add list filters

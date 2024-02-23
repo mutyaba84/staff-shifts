@@ -8,6 +8,9 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ['is_employer', 'subscription_valid_until', 'stripe_customer_id', 'is_group_subscription', 'group_subscription_id', 'subscription_enabled']
+        widgets = {
+            'subscription_valid_until': forms.DateInput(attrs={'type': 'date'}),
+        }
 
 class UserRegistrationForm(UserCreationForm):
     email = forms.EmailField()
@@ -15,4 +18,3 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
-

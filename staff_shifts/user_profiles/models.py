@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -35,12 +36,24 @@ class Shift(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
 
+    def clean(self):
+        if self.start_time and self.end_time and self.start_time >= self.end_time:
+            raise ValidationError("End time must be after start time.")
+
 class Availability(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,  related_name='user_profile_availability')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_profile_availabilities')
     shift = models.ForeignKey(Shift, on_delete=models.CASCADE)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='user_profile_availability')
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='user_profile_availabilities')
     date_time_selected = models.DateTimeField()
     is_available = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ['user', 'date_time_selected']
+
+    def clean(self):
+        if self.shift.start_time and self.shift.end_time and self.date_time_selected:
+            if self.shift.start_time <= self.date_time_selected < self.shift.end_time:
+                raise ValidationError("User cannot work overlapping shifts.")
 
 class ShiftOffer(models.Model):
     user = models.ForeignKey(User, related_name='user_profile_offers_received', on_delete=models.CASCADE)

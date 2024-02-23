@@ -3,10 +3,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from user_profiles.models import UserProfile, Address
+from user_profiles.models import Address
 from employers.models import Employer
 from notifications.models import Notification
-
 
 class Shift(models.Model):
     CANCELLED = 'cancelled'
@@ -21,7 +20,6 @@ class Shift(models.Model):
         (REJECTED, 'Rejected'),
     ]
 
-
     max_users = models.PositiveIntegerField(default=1)
     shift_name = models.CharField(max_length=255)
     start_time = models.DateTimeField()
@@ -30,7 +28,7 @@ class Shift(models.Model):
     reminder_enabled = models.BooleanField(default=False)
     reminder_days_before = models.PositiveIntegerField(default=3)
 
-    # Add address details for the employer
+    # Address details for the employer
     employer_address_line1 = models.CharField(max_length=255, blank=True, null=True)
     employer_address_line2 = models.CharField(max_length=255, blank=True, null=True)
     employer_city = models.CharField(max_length=255, blank=True, null=True)
@@ -71,8 +69,6 @@ class Shift(models.Model):
                 Notification.objects.create(user=offer.user.user, content=notification_content)
                 Notification.objects.create(user=offer.employer.user, content=notification_content)
 
-
-
 class Availability(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='shift_availability')
     shift = models.ForeignKey(Shift, on_delete=models.CASCADE)
@@ -84,16 +80,9 @@ class Availability(models.Model):
         unique_together = ['user', 'date_time_selected']
 
     def clean(self):
-        cleaned_data = getattr(self, '_cleaned_data', None)
-        
-        if cleaned_data:
-            start_time = cleaned_data.get('start_time')
-            end_time = cleaned_data.get('end_time')
-
-            if start_time and end_time and start_time >= end_time:
-                raise ValidationError("End time must be after start time.")
-         
-     
+        if self.shift.start_time and self.shift.end_time and self.date_time_selected:
+            if not (self.shift.start_time <= self.date_time_selected < self.shift.end_time):
+                raise ValidationError("User cannot work overlapping shifts.")
 
 class ShiftOffer(models.Model):
     user = models.ForeignKey(User, related_name='shift_offers_received', on_delete=models.CASCADE)
