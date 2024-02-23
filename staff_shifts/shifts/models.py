@@ -84,10 +84,16 @@ class Availability(models.Model):
         unique_together = ['user', 'date_time_selected']
 
     def clean(self):
-        if self.shift.start_time and self.shift.end_time and self.date_time_selected:
-            if self.shift.start_time <= self.date_time_selected < self.shift.end_time:
-                raise ValidationError("User cannot work overlapping shifts.")
+        cleaned_data = getattr(self, '_cleaned_data', None)
+        
+        if cleaned_data:
+            start_time = cleaned_data.get('start_time')
+            end_time = cleaned_data.get('end_time')
 
+            if start_time and end_time and start_time >= end_time:
+                raise ValidationError("End time must be after start time.")
+         
+     
 
 class ShiftOffer(models.Model):
     user = models.ForeignKey(User, related_name='shift_offers_received', on_delete=models.CASCADE)

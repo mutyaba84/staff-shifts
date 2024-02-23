@@ -26,6 +26,8 @@ class AvailabilityAdmin(admin.ModelAdmin):
     date_hierarchy = 'date_time_selected'
 
 
+
+
 @admin.register(ShiftOffer)
 class ShiftOfferAdmin(admin.ModelAdmin):
     list_display = ['user', 'employer', 'shift', 'offer_status']
