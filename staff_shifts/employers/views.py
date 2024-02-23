@@ -26,3 +26,4 @@ class EmployerProfileUpdateView(UpdateView):
             shift.send_reminder()
 
         return response
+
